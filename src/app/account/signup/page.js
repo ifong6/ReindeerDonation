@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSearchParams } from 'next/navigation';
 import {
   CognitoUserPool,
   CognitoUserAttribute,
@@ -12,6 +13,7 @@ const userPool = new CognitoUserPool({
   ClientId: process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID,
 });
 
+
 function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,6 +23,10 @@ function SignupForm() {
   const [success, setSuccess] = useState("");
   const [verificationSent, setVerificationSent] = useState(false);
 
+  const searchParams = useSearchParams();
+  const role = searchParams.get('role'); // Extracting the role from query parameters
+    
+  // -----handleSubmitForm-----
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -48,8 +54,10 @@ function SignupForm() {
       console.log("Signup fail. Error:", e);
     }
   };
+  //------------------------------------
 
-  const handleConfirm = async (event) => {
+  // -----handleConfirmVerification-----
+  const handleConfirmVerification = async (event) => {
     event.preventDefault();
 
     const userData = {
@@ -69,14 +77,15 @@ function SignupForm() {
       console.log("Confirmation fail. Error:", e);
     }
   };
+  //------------------------------------
 
   return (
-    <div class="max-w-md mx-auto p-6 shadow-md">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form onSubmit={handleSubmit} class="space-y-6">
-        <h2>Sign Up</h2>
+        <h2>Signing up as {role}</h2>
 
         <label htmlFor="name" class="block text-sm font-medium text-gray-700">
-          Name:
+          Username:
         </label>
         <input
           type="text"
@@ -116,14 +125,14 @@ function SignupForm() {
 
         <button
           type="submit"
-          className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="block px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
         >
-          Sign Up
+          Submit
         </button>
       </form>
 
       {success && verificationSent && (
-        <form onSubmit={handleConfirm}>
+        <form onSubmit={handleConfirmVerification}>
           <label htmlFor="code">Confirmation Code:</label>
           <input
             type="text"

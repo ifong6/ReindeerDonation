@@ -37,7 +37,7 @@ export default function LoginPage() {
     }
   };
 
-    const signInHandler = async (event) => {
+  const signInHandler = async (event) => {
     try {
       await signIn("cognito", {
         callbackUrl: "http://localhost:3000/account/login",
@@ -128,7 +128,7 @@ export default function LoginPage() {
       <div className={styles.registerDiv}>
         <h2 className="text-2xl font-bold text-gray-800">FIRST TIME USER ?</h2>
         <p className="text-gray-600 my-2">It's free, and fast!</p>
-        <Link href="/account/signup" className={styles.link}>
+        <Link href="/account/role" className={styles.link}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
